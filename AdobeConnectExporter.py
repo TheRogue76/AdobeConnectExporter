@@ -14,7 +14,16 @@ import argparse
 import sys
 import re
 from dotenv import load_dotenv
+load_dotenv()
 
+def get_server():
+    option = input("which University are you trying to connect to?\n 1-Shahid Beheshti\n 2-KNTU \n 3-etc\n")
+    if option == '1':
+        return os.getenv('shahidBeheshtiServerIp')
+    elif option == '2':
+        return os.getenv('kntuServerIP')
+    else:
+        return str(input("Enter your universities server ip"))
 
 def run_command(command):
     print('running command: {0}'.format(command))
@@ -39,7 +48,7 @@ def create_folder_if_not_exists(directory):
         os.makedirs(directory)
 
 
-def extract_connect_id(parser, args):
+def extract_connect_id(parser, args, server_address):
     '''
     Function written by Aaron Hertzmann. Edited by Parsa Hejabi.
     '''
@@ -59,7 +68,7 @@ def extract_connect_id(parser, args):
         s = args.URLorIDorZIP[0].split('/')
         connectID = None
         for i in range(len(s)-1):
-            if '94.184.176.88' in s[i]:
+            if server_address in s[i]:
                 connectID = s[i+1]
                 break
         if connectID == None:
@@ -74,6 +83,8 @@ def main():
     This is the main function
     '''
 
+    server_address = get_server()
+
     # ================ parse the arguments (part of the parsing code was written by Aaron Hertzmann and edited by Parsa Hejabi) ======================
 
     parser = argparse.ArgumentParser(
@@ -86,13 +97,15 @@ def main():
                         default='noname', help='output_filename')
     args = parser.parse_args()
 
+    args.URLorIDorZIP[0] = 'http://'+server_address+'/'+args.URLorIDorZIP[0]+'/'
+
     #main_output_folder = "all_videos"
     main_output_folder = args.output_folder
     output_filename = args.output_filename
     output_filename = re.sub(r'[^\w\s]', '', output_filename)
     output_filename = output_filename.replace('@', '').strip()
     print('output_filename: {0}'.format(output_filename))
-    connect_id = extract_connect_id(parser, args)
+    connect_id = extract_connect_id(parser, args, server_address)
     video_filename = output_filename
 
     with open('cookie.txt', 'r') as file:
@@ -105,7 +118,7 @@ def main():
     create_folder_if_not_exists(main_output_folder)
 
     # Step 1: retrieve audio and video files
-    connect_zip_url = 'http://94.184.176.88/{0}/output/{0}.zip?download=zip'.format(
+    connect_zip_url = 'http://'+server_address+'/{0}/output/{0}.zip?download=zip'.format(
         connect_id)
     # -nc, --no-clobber: skip downloads that would download to existing files.
     wget_command = 'wget -d -nc --header="{0}" {1}'.format(
