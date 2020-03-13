@@ -58,7 +58,7 @@ def extract_connect_id(parser, args):
         s = args.URLorIDorZIP[0].split('/')
         connectID = None
         for i in range(len(s)-1):
-            if '194.225.24.94' in s[i]:
+            if '94.184.176.88' in s[i]:
                 connectID = s[i+1]
                 break
         if connectID == None:
@@ -104,7 +104,7 @@ def main():
     create_folder_if_not_exists(main_output_folder)
 
     # Step 1: retrieve audio and video files
-    connect_zip_url = 'http://194.225.24.94/{0}/output/{0}.zip?download=zip'.format(
+    connect_zip_url = 'http://94.184.176.88/{0}/output/{0}.zip?download=zip'.format(
         connect_id)
     # -nc, --no-clobber: skip downloads that would download to existing files.
     wget_command = 'wget -d -nc --header="{0}" {1}'.format(
