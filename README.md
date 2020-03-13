@@ -26,4 +26,4 @@ An exporter for Adobe Connect recorded sessions for virtual classes held for Uni
 
 - Now you can enter ```python3 AdobeConnectExporter.py r23uu9avrhv```(r23uu9avrhv defines the course in http://94.184.176.88/r23uu9avrhv/).
 
--At this point, a prompt is shown asking you to define which university you are from. You can select Shahid beheshti, KNTU or just select the third option and give the server ip yourself.
+- At this point, a prompt is shown asking you to define which university you are from. You can select Shahid beheshti, KNTU or just select the third option and give the server ip yourself.
