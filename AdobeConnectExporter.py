@@ -13,6 +13,7 @@ import glob
 import argparse
 import sys
 import re
+from dotenv import load_dotenv
 
 
 def run_command(command):
