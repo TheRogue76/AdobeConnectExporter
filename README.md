@@ -9,10 +9,10 @@ An exporter for Adobe Connect recorded sessions for virtual classes held for Uni
 
 - First of all grab a link provided by university for one of the classes and append `output/felan.zip?download=zip` to the end of the link.
 
-  - For example: <http://94.184.176.88/r23uu9avrhv/> (This is a link provided by university.)
+  - For example: <http://194.225.24.94/p9uxd7gt6zoc/> (This is a link provided by university.)
 
   - Changed link would be like:
-  <http://94.184.176.88/r23uu9avrhv/output/felan.zip?download=zip>
+  <http://194.225.24.94/p9uxd7gt6zoc/output/felan.zip?download=zip>
 
 - When you hit enter you have to provide your `username` and your `password`. Make sure before hitting `login` button open developer view on your browser and go to the `network` section.
 
@@ -24,6 +24,6 @@ An exporter for Adobe Connect recorded sessions for virtual classes held for Uni
 
 - Make sure that you have `wget`, `unzip` and `ffmpeg` installed and accessable from your `terminal` or `cmd` because this script is using these tools.
 
-- Now you can enter ```python3 AdobeConnectExporter.py r23uu9avrhv```(r23uu9avrhv defines the course in http://94.184.176.88/r23uu9avrhv/).
+- Now you can enter ```python3 AdobeConnectExporter.py http://194.225.24.94/po68hagu1ncb/``` OR ```python3 AdobeConnectExporter.py po68hagu1ncb``` OR ```python3 AdobeConnectExporter.py http://194.225.24.94/p9uxd7gt6zoc/output/felan.zip```
 
-- At this point, a prompt is shown asking you to define which university you are from. You can select Shahid beheshti, KNTU or just select the third option and give the server ip yourself.
+- At this point, a prompt is shown asking you to define which university you are from. You can select Shahid beheshti, KNTU or just select the third option and give the server ip yourself and output would be a single video file

@@ -13,17 +13,27 @@ import glob
 import argparse
 import sys
 import re
-from dotenv import load_dotenv
-load_dotenv()
+
 
 def get_server():
-    option = input("which University are you trying to connect to?\n 1-Shahid Beheshti\n 2-KNTU \n 3-etc\n")
-    if option == '1':
-        return os.getenv('shahidBeheshtiServerIp')
-    elif option == '2':
-        return os.getenv('kntuServerIP')
+    server_name = []
+    server_ip = []
+    with open('ipAddresses.txt', 'r') as file:
+        for line in file:
+            temp = line.split('\'')
+            server_name.append(temp[1])
+            server_ip.append(temp[3])
+    print("which University are you trying to connect to?")
+    for i in range(len(server_name)):
+        print("{0}-{1}".format(i + 1, server_name[i]))
+    print("{0}-Other".format(len(server_name)+1))
+    option = int(input())
+    while option < 1 or option > len(server_name)+1:
+        option = int(input("Option not found. Try again\n"))
+    if option != len(server_name)+1:
+        return server_ip[option-1]
     else:
-        return str(input("Enter your universities server ip"))
+        return str(input("Enter your universities server ip\n"))
 
 def run_command(command):
     print('running command: {0}'.format(command))
@@ -67,9 +77,9 @@ def extract_connect_id(parser, args, server_address):
     else:
         s = args.URLorIDorZIP[0].split('/')
         connectID = None
-        for i in range(len(s)-1):
+        for i in range(len(s) - 1):
             if server_address in s[i]:
-                connectID = s[i+1]
+                connectID = s[i + 1]
                 break
         if connectID == None:
             print("Error: couldn't parse URL")
@@ -97,9 +107,7 @@ def main():
                         default='noname', help='output_filename')
     args = parser.parse_args()
 
-    args.URLorIDorZIP[0] = 'http://'+server_address+'/'+args.URLorIDorZIP[0]+'/'
-
-    #main_output_folder = "all_videos"
+    # main_output_folder = "all_videos"
     main_output_folder = args.output_folder
     output_filename = args.output_filename
     output_filename = re.sub(r'[^\w\s]', '', output_filename)
@@ -118,7 +126,7 @@ def main():
     create_folder_if_not_exists(main_output_folder)
 
     # Step 1: retrieve audio and video files
-    connect_zip_url = 'http://'+server_address+'/{0}/output/{0}.zip?download=zip'.format(
+    connect_zip_url = 'http://' + server_address + '/{0}/output/{0}.zip?download=zip'.format(
         connect_id)
     # -nc, --no-clobber: skip downloads that would download to existing files.
     wget_command = 'wget -O {2} -d -nc --header="{0}" {1}'.format(
@@ -144,7 +152,7 @@ def main():
     for cameraVoip_filepath, screenshare_filepath in zip(cameraVoip_filepaths, screenshare_filepaths):
         output_filepath = os.path.join(
             main_output_folder, '{0}_{1:04d}.flv'.format(video_filename, part))
-        #output_filepath = '{0}_{1:04d}.flv'.format(video_filename, part)
+        # output_filepath = '{0}_{1:04d}.flv'.format(video_filename, part)
         output_filepaths.append(output_filepath)
         # ffmpeg command from Oliver Wang / Yannick Hold-Geoffroy / Aaron Hertzmann
         conversion_command = 'ffmpeg -i "%s" -i "%s" -c copy -map 0:a:0 -map 1:v:0 -shortest -y "%s"' % (
