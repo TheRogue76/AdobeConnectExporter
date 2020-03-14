@@ -23,17 +23,17 @@ def get_server():
             temp = line.split('\'')
             server_name.append(temp[1])
             server_ip.append(temp[3])
-    print("which University are you trying to connect to?")
+    print('which University are you trying to connect to?')
     for i in range(len(server_name)):
-        print("{0}-{1}".format(i + 1, server_name[i]))
+        print('{0}-{1}'.format(i + 1, server_name[i]))
     print("{0}-Other".format(len(server_name)+1))
     option = int(input())
     while option < 1 or option > len(server_name)+1:
-        option = int(input("Option not found. Try again\n"))
+        option = int(input('Option not found. Try again\n'))
     if option != len(server_name)+1:
         return server_ip[option-1]
     else:
-        return str(input("Enter your universities server ip\n"))
+        return str(input('Enter your universities server ip\n'))
 
 def run_command(command):
     print('running command: {0}'.format(command))
